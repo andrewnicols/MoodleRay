@@ -2,7 +2,6 @@
 
 namespace AndrewNicols\MoodleRay;
 
-use AndrewNicols\MoodleRay\Loggers\QueryLogger;
 use Spatie\Ray\Payloads\Payload;
 use Spatie\Ray\Ray as BaseRay;
 
@@ -13,8 +12,6 @@ class Ray extends BaseRay
 
     public static function bootForMoodle()
     {
-        static::$queryLogger = new QueryLogger();
-
         Payload::$originFactoryClass = OriginFactory::class;
     }
 
@@ -32,7 +29,7 @@ class Ray extends BaseRay
 
     public function showingQueries(): bool
     {
-        static::$showingQueries === true;
+        return static::$showingQueries === true;
     }
 
     public function stopShowingQueries(): self
