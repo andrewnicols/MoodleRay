@@ -1,0 +1,25 @@
+{
+    "name": "andrewnicols/moodle-ray",
+    "description": "A Ray Library for Moodle",
+    "type": "library",
+    "require": {
+        "spatie/ray": "^1.34"
+    },
+    "license": "GPL-2.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "AndrewNicols\\MoodleRay\\": "src/"
+        }
+    },
+    "support": {
+        "issues": "https://github.com/andrewnicols/moodle-ray/issues",
+        "wiki": "https://github.com/andrewnicols/moodle-ray/wiki",
+        "source": "https://github.com/andrewnicols/moodle-ray"
+    },
+    "authors": [
+        {
+            "name": "Andrew Lyons",
+            "email": "andrew@nicols.co.uk"
+        }
+    ]
+}
