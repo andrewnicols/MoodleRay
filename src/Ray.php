@@ -2,6 +2,7 @@
 
 namespace AndrewNicols\MoodleRay;
 
+use AndrewNicols\MoodleRay\Payloads\ExecutedQueryPayload;
 use Spatie\Ray\Payloads\Payload;
 use Spatie\Ray\Ray as BaseRay;
 
@@ -9,6 +10,9 @@ class Ray extends BaseRay
 {
     /** @var bool Whether DB queries are logged */
     protected static $showingQueries = false;
+
+    /** @var bool Whether Moodle Events are logged */
+    protected static $showingEvents = false;
 
     public static function bootForMoodle()
     {
@@ -59,5 +63,33 @@ class Ray extends BaseRay
         }
 
         return BaseRay::sendRequest($payloads, $meta);
+    }
+
+    public function logEvents(): self
+    {
+        static::$showingEvents = true;
+
+        return $this;
+    }
+
+    public function loggingEvents(): bool
+    {
+        return static::$showingEvents === true;
+    }
+
+    public function stopLoggingEvents(): self
+    {
+        static::$showingEvents = false;
+
+        return $this;
+    }
+
+    public function logEvent(...$args): self
+    {
+        if (!$this->loggingEvents()) {
+            return $this;
+        }
+
+        return $this->send(...$args)->label('Moodle Event');
     }
 }
