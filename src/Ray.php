@@ -8,8 +8,8 @@ use Spatie\Ray\Ray as BaseRay;
 
 class Ray extends BaseRay
 {
-    /** @var \AndrewNicols\MoodleRay\Loggers\QueryLogger */
-    protected static $queryLogger;
+    /** @var bool Whether DB queries are logged */
+    protected static $showingQueries = false;
 
     public static function bootForMoodle()
     {
@@ -25,28 +25,34 @@ class Ray extends BaseRay
 
     public function showQueries(): self
     {
-        static::$queryLogger->showQueries();
+        static::$showingQueries = true;
 
         return $this;
     }
 
-    public function queries(): self
+    public function showingQueries(): bool
     {
-        return $this->showQueries();
+        static::$showingQueries === true;
     }
 
     public function stopShowingQueries(): self
     {
-        static::$queryLogger->stopShowingQueries();
+        static::$showingQueries = false;
 
         return $this;
     }
 
-    public function sendQueryToRay(...$args): self
+    public function sendQueryToRay($sql, $params, $timeInSeconds): self
     {
-        static::$queryLogger->sendQueryToRay(...$args);
+        if (!$this->showingQueries()) {
+            return $this;
+        }
 
-        return $this;
+        $timeInMilliSeconds = $timeInSeconds * 1000;
+
+        $payload = new ExecutedQueryPayload($sql, $params, $timeInMilliSeconds);
+
+        return ray()->sendRequest($payload);
     }
 
     public function sendRequest($payloads, array $meta = []): BaseRay
