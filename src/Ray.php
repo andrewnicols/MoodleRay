@@ -8,10 +8,10 @@ use Spatie\Ray\Ray as BaseRay;
 
 class Ray extends BaseRay
 {
-    /** @var bool Whether DB queries are logged */
+    /** @var bool Whether DB queries are showged */
     protected static $showingQueries = false;
 
-    /** @var bool Whether Moodle Events are logged */
+    /** @var bool Whether Moodle Events are showged */
     protected static $showingEvents = false;
 
     public static function bootForMoodle()
@@ -65,28 +65,28 @@ class Ray extends BaseRay
         return BaseRay::sendRequest($payloads, $meta);
     }
 
-    public function logEvents(): self
+    public function showEvents(): self
     {
         static::$showingEvents = true;
 
         return $this;
     }
 
-    public function loggingEvents(): bool
+    public function showingEvents(): bool
     {
         return static::$showingEvents === true;
     }
 
-    public function stopLoggingEvents(): self
+    public function stopShowingEvents(): self
     {
         static::$showingEvents = false;
 
         return $this;
     }
 
-    public function logEvent(...$args): self
+    public function showEvent(...$args): self
     {
-        if (!$this->loggingEvents()) {
+        if (!$this->showingEvents()) {
             return $this;
         }
 
