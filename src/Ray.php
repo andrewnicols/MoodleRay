@@ -53,7 +53,7 @@ class Ray extends BaseRay
 
         $payload = new ExecutedQueryPayload($sql, $params, $timeInMilliSeconds);
 
-        return ray()->sendRequest($payload);
+        return mray()->sendRequest($payload);
     }
 
     public function sendRequest($payloads, array $meta = []): BaseRay
